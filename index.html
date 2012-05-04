@@ -1,0 +1,28 @@
+<html>
+	<head>
+        <title>Twitter Isotop wall</title>
+        <!-- JS -->
+        <script src="scripts/jquery.min.js"></script>
+        <script src="scripts/jquery.isotope.min.js"></script>
+        <script src="scripts/ICanHaz.min.js"></script>
+        <script src="scripts/moment.min.js"></script>
+        <script src="twitisowall.js"></script>
+
+        <!-- CSS -->
+        <link href="styles/isotop.css" type="text/css" rel="stylesheet">
+        <link href="styles/twitisowall.css" type="text/css" rel="stylesheet">
+
+        <!-- templates -->
+        <script id="tweet" type="text/html">
+            {{#results}}
+        	<div class="item">
+        		<span>{{from_user}} -- {{created_from}}</span>
+        		<p>{{text}}</p>
+        	</div>
+            {{/results}}
+        </script>
+	</head>
+    <body>
+        <div id="container"></div>
+    </body>
+</html>
