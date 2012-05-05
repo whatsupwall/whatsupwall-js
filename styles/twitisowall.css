@@ -13,14 +13,56 @@ body {
 }
 
 .item {
-	background-color: red;
+	background-color: #ddd;
+  border: 1px solid #999;
 	padding: 10px;
 	margin: 5px;
   width: 22%;
+  -webkit-border-top-left-radius: 10px;
+     -moz-border-top-left-radius: 10px;
+      -ms-border-top-left-radius: 10px;
+       -o-border-top-left-radius: 10px;
+          border-top-left-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+     -moz-border-bottom-right-radius: 10px;
+      -ms-border-bottom-right-radius: 10px;
+       -o-border-bottom-right-radius: 10px;
+          border-bottom-right-radius: 10px;
 }
 
 .item p {
+  clear: both;
   word-wrap: break-word;
+  border: 1px solid #555;
+  padding: 3px;
+  margin:0px;
+  min-height: 56px;
+  text-shadow: #aaa 1px 1px 1px;
+  background-color: #eee;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+      -ms-border-radius: 3px;
+       -o-border-radius: 3px;
+          border-radius: 3px;
+}
+
+.item img {
+  width: 48px;
+  height: 48px;
+  float: left;
+  padding: 3px;
+  margin-right: 3px;
+  border:1px solid #888;
+  background-color: #fff;
+}
+
+.item .author_login {
+  font-size: 0.9em;
+}
+
+.item .create_from {
+  float: right;
+  font-size: 0.8em;
 }
 
 #searchInput {
@@ -31,9 +73,21 @@ body {
   padding: 0.4em;
   text-shadow: #888 1px 1px 1px;
   font-size: 1.3em;
+  background-color: #fcfcfc;
   -webkit-border-radius: 5px;
      -moz-border-radius: 5px;
       -ms-border-radius: 5px;
        -o-border-radius: 5px;
           border-radius: 5px;
 }
+
+a {
+  color: red;
+  text-shadow: #aaa 1px 2px 2px;
+}
+a, a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+};

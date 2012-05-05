@@ -17,8 +17,9 @@
     <script id="tweet" type="text/html">
         {{#results}}
         <div class="item" data-created-at="{{created_at}}">
-            <span class="author">{{from_user}}</span> <span class="create_from">{{created_from}}</span>
-            <p>{{{text}}}</p>
+            <span class="author_name"><a href="https://twitter.com/#!/{{from_user}}">{{from_user_name}}</a></span>&nbsp;<span class="author_login">@{{from_user}}</span> <span class="create_from">{{created_from}}</span>
+            <p><img src="{{profile_image_url_https}}" alt="{{from_user}}" />
+            {{{text}}}</p>
         </div>
         {{/results}}
     </script>
