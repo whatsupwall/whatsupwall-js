@@ -1,5 +1,6 @@
 ;
-var URI_REGEX = /https?:\/\/[-a-zA-Z0-9+&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\/%=~_|]/
+var URI_REGEX = /https?:\/\/[-a-zA-Z0-9+&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\/%=~_|]/g
+var LINK_REGEX = /[#@]{1}[\w_]+/g
 var autoRefresh;
 
 $(function() {
@@ -50,9 +51,6 @@ function handleResponse(data) {
     console.log("ERREUR")
     return;
   }
-  console.log(data)
-  //console.log(data)
-  //container.empty();
   appendTweets(data)
   if (data.refresh_url) {
     startAutoRefresh(data.refresh_url);
@@ -65,18 +63,27 @@ function handleResponse(data) {
   }
 }
 
+function replaceInText(obj, regex, replacer) {
+  obj['text'] = obj['text'].replace(regex, replacer)
+}
+
 function appendTweets(data) {
   $.map(data['results'], function(obj, index) {
     // add created_from value
     obj['created_from'] = moment(obj['created_at']).fromNow()
 
     // Add anchor
-    var match = obj['text'].match(URI_REGEX)
-    if (match) {
-      var uri = match[0]
-      obj['text'] = obj['text'].replace(uri, '<a href="' + uri + '">' + uri + '</a>');
-    }
+    replaceInText(obj, URI_REGEX, function(match) {
+      return '<a href="' + match + '">' + match + '</a>';
+    });
+
+    // Link for @ or #
+    replaceInText(obj, LINK_REGEX, function(match) {
+      return '<a href="https://twitter.com/#!/search/' + encodeURI(match) + '">' + match + '</a>';
+    });
   });
+
+  // Rendering
   var tweets = ich.tweet(data);
   container.prepend(tweets).isotope('reloadItems').isotope({
     sortBy: 'original-order'
