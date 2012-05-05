@@ -8,3 +8,17 @@
 	width: 200px;
 }
 
+#searchInput {
+  display: block;
+  width: 90%;
+  border: 1px solid #444;
+  margin: 0 auto;
+  padding: 0.4em;
+  text-shadow: #888 1px 1px 1px;
+  font-size: 1.3em;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+       -o-border-radius: 5px;
+          border-radius: 5px;
+}

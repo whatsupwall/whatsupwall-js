@@ -1,20 +1,32 @@
-var URI_REGEX = /https?:\/\/[-a-zA-Z0-9+&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\/%=~_|]/
+;var URI_REGEX = /https?:\/\/[-a-zA-Z0-9+&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\/%=~_|]/
 
-;$(function() {
+$(function() {
   container = $("#container");
 
-    // Init container
-    container.isotope({
-        // options
-        itemSelector : '.item',
-        layoutMode : 'masonry',
-        masonry: {
-            //columnWidth: 240
-          }
-        });
-
-    queryTwitter("q=" + encodeURI("KohLanta"));
+  // Init container
+  container.isotope({
+    // options
+    itemSelector : '.item',
+    layoutMode : 'masonry',
   });
+
+  //Input field
+  var timeout;
+  $("#searchInput").keypress(function(e) {
+    clearTimeout(timeout)
+    var that = $(this);
+    timeout = setTimeout(function() {
+      if(sessionStorage) {
+        sessionStorage.searchInput = that.val()
+      }
+      search(that.val())
+    }, 800);
+  });
+  if (sessionStorage && sessionStorage.searchInput) {
+    $("#searchInput").val(sessionStorage.searchInput);
+    search(sessionStorage.searchInput)
+  }
+});
 
 function queryTwitter(params) {
   if (!params.match(/^\?/)) {
@@ -67,4 +79,9 @@ function handleResponse(data) {
     setTimeout(function() {
       queryTwitter(sessionStorage.refresh_url);
     }, 4000);
+  }
+
+  function search(value) {
+    container.isotope( 'remove', container.children());
+    queryTwitter("q=" + encodeURI(value));
   }
