@@ -16,8 +16,8 @@
     <!-- templates -->
     <script id="tweet" type="text/html">
         {{#results}}
-        <div class="item">
-            <span>{{from_user}}</span>
+        <div class="item" data-created-at="{{created_at}}">
+            <span class="author">{{from_user}}</span> <span class="create_from">{{created_from}}</span>
             <p>{{{text}}}</p>
         </div>
         {{/results}}

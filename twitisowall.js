@@ -1,6 +1,6 @@
 ;
 var URI_REGEX = /https?:\/\/[-a-zA-Z0-9+&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\/%=~_|]/
-var autoUpdate;
+var autoRefresh;
 
 $(function() {
   container = $("#container");
@@ -29,6 +29,9 @@ $(function() {
     $("#searchInput").val(sessionStorage.searchInput);
     search(sessionStorage.searchInput)
   }
+
+  //autoUpdateTweets
+  autoUpdateTweets();
 });
 
 function queryTwitter(params) {
@@ -52,7 +55,7 @@ function handleResponse(data) {
   //container.empty();
   appendTweets(data)
   if (data.refresh_url) {
-    startAutoUpdate(data.refresh_url);
+    startAutoRefresh(data.refresh_url);
   }
 
   var nbChild = container.children().size();
@@ -64,6 +67,10 @@ function handleResponse(data) {
 
 function appendTweets(data) {
   $.map(data['results'], function(obj, index) {
+    // add created_from value
+    obj['created_from'] = moment(obj['created_at']).fromNow()
+
+    // Add anchor
     var match = obj['text'].match(URI_REGEX)
     if (match) {
       var uri = match[0]
@@ -76,14 +83,29 @@ function appendTweets(data) {
   })
 }
 
-function startAutoUpdate(url) {
-  autoUpdate = setTimeout(function() {
+function startAutoRefresh(url) {
+  autoRefresh = setTimeout(function() {
     queryTwitter(url);
+    updateTweets()
   }, 4000);
 }
 
+function autoUpdateTweets() {
+  setTimeout(function() {
+    updateTweets()
+    autoUpdateTweets()
+  }, 10000);
+}
+
+function updateTweets() {
+  container.children().each(function() {
+    var that = $(this)
+    that.find(".create_from").html(moment(that.data('createdAt')).fromNow())
+  })
+}
+
 function search(value) {
-  clearTimeout(autoUpdate)
+  clearTimeout(autoRefresh)
   container.isotope('remove', container.children());
   queryTwitter("q=" + encodeURI(value));
 }
