@@ -1,4 +1,5 @@
 ;var URI_REGEX = /https?:\/\/[-a-zA-Z0-9+&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\/%=~_|]/
+var autoUpdate;
 
 $(function() {
   container = $("#container");
@@ -22,6 +23,7 @@ $(function() {
       search(that.val())
     }, 800);
   });
+
   if (sessionStorage && sessionStorage.searchInput) {
     $("#searchInput").val(sessionStorage.searchInput);
     search(sessionStorage.searchInput)
@@ -43,17 +45,14 @@ function handleError(data) {
 function handleResponse(data) {
   if (data.error) {
     console.log("ERREUR")
+    return;
   }
+  console.log(data)
     //console.log(data)
     //container.empty();
     appendTweets(data)
-
-    if(sessionStorage == null) {
-      console.log("Session Storage not available ...")
-      return;
-    } else {
-      sessionStorage.refresh_url = data.refresh_url
-      startAutoUpdate();
+    if (data.refresh_url) {
+      startAutoUpdate(data.refresh_url);
     }
 
     var nbChild = container.children().size();
@@ -75,13 +74,14 @@ function handleResponse(data) {
     container.prepend(tweets).isotope('reloadItems').isotope({ sortBy: 'original-order' })
   }
 
-  function startAutoUpdate() {
-    setTimeout(function() {
-      queryTwitter(sessionStorage.refresh_url);
+  function startAutoUpdate(url) {
+    autoUpdate = setTimeout(function() {
+      queryTwitter(url);
     }, 4000);
   }
 
   function search(value) {
+    clearTimeout(autoUpdate)
     container.isotope( 'remove', container.children());
     queryTwitter("q=" + encodeURI(value));
   }
