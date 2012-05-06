@@ -1,4 +1,7 @@
 ;
+var INTAGRAM_REGEX = /instagr.am\/p\/(\w+)\/?/
+http://instagr.am/p/KRxZTRrLJJ/media/?size=t
+
 var timers = {};
 
 $(function() {
@@ -27,9 +30,9 @@ $(function() {
   var initSearch = "arnaudke"
   if (sessionStorage && sessionStorage.searchInput) {
     console.log("Search: " + sessionStorage.searchInput)
-    $("#searchInput").val(sessionStorage.searchInput);
     initSearch = sessionStorage.searchInput
   }
+  $("#searchInput").val(initSearch);
   search(initSearch)
 
   startTimer('updateTweets', 2000, updateTweets);
@@ -68,18 +71,31 @@ function replaceInText(obj, regex, replacer) {
   obj['text'] = obj['text'].replace(regex, replacer)
 }
 
+function mineConcat(obj, fields) {
+  var res = [];
+  for (var i = 0; i < fields.length; i++) {
+    var field = fields[i]
+    if (obj[field]) {
+      res = res.concat(obj[field])
+    }
+  };
+  return res;
+}
+
 function appendTweets(data) {
   $.map(data['results'], function(obj, index) {
     // add created_from value
     obj['created_from'] = moment(obj['created_at']).fromNow()
     obj['added_at'] = moment().toDate();
 
-    if (obj.entities.hashtags) console.log(obj.entities.hashtags)
-    var entities = obj.entities.urls.concat(obj.entities.hashtags, obj.entities.user_mentions).sort(function(a, b) {
+    var entities = mineConcat(obj.entities, ["urls", "hashtags", "user_mentions", "media"]).sort(function(a, b) {
       return a.indices[0] - b.indices[0];
-    })
+    });
     fillEntities(obj, entities);
 
+    $.map(obj.entities.urls, function(url) {
+      
+    })
   });
 
   // Rendering
@@ -102,6 +118,10 @@ function fillEntities(obj, entities) {
       text += '<a href="https://www.twitter.com/' + entity.screen_name + '">@' + entity.name + '</a>'
     } else if (entity.text) {
       text += '<a href="https://www.twitter.com/' + entity.text + '">#' + entity.text + '</a>'
+    }
+
+    if (entity.media_url && entity.type == "photo") {
+      obj.image_url = entity.media_url + ":thumb"
     }
 
     start = entity.indices[1]
