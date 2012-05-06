@@ -30,6 +30,10 @@ body {
           border-bottom-right-radius: 10px;
 }
 
+.item.newItem {
+  background-color: #F8D4DB;
+}
+
 .item p {
   clear: both;
   word-wrap: break-word;

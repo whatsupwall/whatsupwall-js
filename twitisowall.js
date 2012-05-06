@@ -1,6 +1,4 @@
 ;
-var URI_REGEX = /https?:\/\/[-a-zA-Z0-9+&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\/%=~_|]/g
-var LINK_REGEX = /[#@]{1}[\w_]+/g
 var timers = {};
 
 $(function() {
@@ -26,10 +24,13 @@ $(function() {
     }, 800);
   });
 
+  var initSearch = "arnaudke"
   if (sessionStorage && sessionStorage.searchInput) {
+    console.log("Search: " + sessionStorage.searchInput)
     $("#searchInput").val(sessionStorage.searchInput);
-    search(sessionStorage.searchInput)
+    initSearch = sessionStorage.searchInput
   }
+  search(initSearch)
 
   startTimer('updateTweets', 2000, updateTweets);
 });
@@ -38,7 +39,7 @@ function queryTwitter(params) {
   if (!params.match(/^\?/)) {
     params = "?" + params
   }
-  $.getJSON("http://search.twitter.com/search.json" + params + "&callback=?", handleResponse).error(handleError);
+  $.getJSON("http://search.twitter.com/search.json" + params + "&rpp=35&include_entities=1&result_type=recent&callback=?", handleResponse).error(handleError);
 }
 
 function handleError(data) {
@@ -57,7 +58,7 @@ function handleResponse(data) {
   }
 
   var nbChild = container.children().size();
-  var maxItem = 50;
+  var maxItem = 100;
   if (nbChild > maxItem) {
     container.isotope('remove', container.children().slice(maxItem));
   }
@@ -71,16 +72,14 @@ function appendTweets(data) {
   $.map(data['results'], function(obj, index) {
     // add created_from value
     obj['created_from'] = moment(obj['created_at']).fromNow()
+    obj['added_at'] = moment().toDate();
 
-    // Add anchor
-    replaceInText(obj, URI_REGEX, function(match) {
-      return '<a href="' + match + '">' + match + '</a>';
-    });
+    if (obj.entities.hashtags) console.log(obj.entities.hashtags)
+    var entities = obj.entities.urls.concat(obj.entities.hashtags, obj.entities.user_mentions).sort(function(a, b) {
+      return a.indices[0] - b.indices[0];
+    })
+    fillEntities(obj, entities);
 
-    // Link for @ or #
-    replaceInText(obj, LINK_REGEX, function(match) {
-      return '<a href="https://twitter.com/#!/search/' + encodeURI(match) + '">' + match + '</a>';
-    });
   });
 
   // Rendering
@@ -90,9 +89,30 @@ function appendTweets(data) {
   })
 }
 
+function fillEntities(obj, entities) {
+  var start = 0,
+    text = "";
+  for (var i = 0; i < entities.length; i++) {
+    var entity = entities[i];
+    text += obj.text.slice(start, entity.indices[0]);
+
+    if (entity.url) {
+      text += '<a href="' + entity.url + '" title="' + entity.expanded_url + '">' + entity.display_url + '</a>';
+    } else if (entity.name) {
+      text += '<a href="https://www.twitter.com/' + entity.screen_name + '">@' + entity.name + '</a>'
+    } else if (entity.text) {
+      text += '<a href="https://www.twitter.com/' + entity.text + '">#' + entity.text + '</a>'
+    }
+
+    start = entity.indices[1]
+  };
+  text += obj.text.slice(start, obj.text.length)
+
+  obj.text = text;
+}
+
 function startTimer(name, timeout, func, data) {
   timers[name] = setTimeout(function() {
-    console.log("Starttime: "+ name)
     func(data);
     startTimer(name, timeout, func, data)
   }, timeout)
@@ -106,6 +126,12 @@ function updateTweets() {
   container.children().each(function() {
     var that = $(this)
     that.find(".create_from").html(moment(that.data('createdAt')).fromNow())
+
+    var diff = moment().diff(moment(that.data('addedAt')), 'seconds')
+    var hex = diff.toString(16);
+    that.animate({
+      color: "red"
+    }, 200);
   })
   container.isotope('reloadItems')
 }
