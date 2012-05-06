@@ -1,6 +1,6 @@
 ;
-var INTAGRAM_REGEX = /instagr.am\/p\/(\w+)\/?/
-http://instagr.am/p/KRxZTRrLJJ/media/?size=t
+var INTAGRAM_REGEX = /instagr\.am\/p\/\w+\/?/
+var TWITPIC_REGEX = /twitpic.com\/(\w+)/
 
 var timers = {};
 
@@ -94,7 +94,16 @@ function appendTweets(data) {
     fillEntities(obj, entities);
 
     $.map(obj.entities.urls, function(url) {
-      
+      if (url.expanded_url.match(INTAGRAM_REGEX)) {
+        obj.image_url = url.expanded_url + "media/?size=t"
+        return;
+      }
+
+      var twitpic = url.expanded_url.match(TWITPIC_REGEX)
+      if (twitpic) {
+        obj.image_url = "http://twitpic.com/show/thumb/" + twitpic[1]
+        return;
+      }
     })
   });
 
