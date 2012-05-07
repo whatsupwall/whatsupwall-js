@@ -2,7 +2,7 @@
 
 ## Intro:
 
-Another Twitter wall with lots of a great javascript libraries.
+Another Twitter wall with lots of great javascript libraries.
 You may look what it looks like following my gh-pages: http://akervern.github.com/twitisowall/
 
 For now, this is still a work in progress project.
