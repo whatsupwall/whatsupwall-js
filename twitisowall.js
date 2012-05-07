@@ -95,13 +95,13 @@ function appendTweets(data) {
 
     $.map(obj.entities.urls, function(url) {
       if (url.expanded_url.match(INTAGRAM_REGEX)) {
-        obj.image_url = url.expanded_url + "media/?size=t"
+        addMedia(obj, url.expanded_url + "media/?size=t")
         return;
       }
 
       var twitpic = url.expanded_url.match(TWITPIC_REGEX)
       if (twitpic) {
-        obj.image_url = "http://twitpic.com/show/thumb/" + twitpic[1]
+        addMedia(obj,"http://twitpic.com/show/thumb/" + twitpic[1])
         return;
       }
     })
@@ -130,7 +130,7 @@ function fillEntities(obj, entities) {
     }
 
     if (entity.media_url && entity.type == "photo") {
-      obj.image_url = entity.media_url + ":thumb"
+      addMedia(obj, entity.media_url + ":thumb")
     }
 
     start = entity.indices[1]
@@ -145,6 +145,13 @@ function startTimer(name, timeout, func, data) {
     func(data);
     startTimer(name, timeout, func, data)
   }, timeout)
+}
+
+function addMedia(obj, url) {
+  if (!obj.image_url) {
+    obj.image_url = []
+  }
+  obj.image_url.push(url)
 }
 
 function clearTimer(name) {
