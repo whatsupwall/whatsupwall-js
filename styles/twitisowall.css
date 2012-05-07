@@ -50,6 +50,17 @@ body {
           border-radius: 3px;
 }
 
+.item img {
+  border:1px solid #888;
+  background-color: #fff;
+  padding: 3px;
+}
+
+.item .attached_media {
+  margin-top: 5px;
+  text-align: center;
+}
+
 .item .media {
   width: 150px;
   height: 150px;
@@ -59,10 +70,7 @@ body {
   width: 48px;
   height: 48px;
   float: left;
-  padding: 3px;
   margin-right: 3px;
-  border:1px solid #888;
-  background-color: #fff;
 }
 
 .item .author_login {

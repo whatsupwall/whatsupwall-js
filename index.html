@@ -21,7 +21,9 @@
             <p><img src="{{profile_image_url_https}}" alt="{{from_user}}" />
             {{{text}}}</p>
             {{#image_url}}
-            <img class="media" src="{{image_url}}" alt="dummy" />
+            <div class="attached_media">
+                <img class="media" src="{{.}}" />
+            </div>
             {{/image_url}}
         </div>
         {{/results}}
