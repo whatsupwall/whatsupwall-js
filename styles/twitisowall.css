@@ -7,6 +7,13 @@ body {
   margin: 10px;
 }
 
+#imageDeleteTools {
+  padding: 3px;
+  position: absolute;
+  right: 7%;
+  top: 19px;
+}
+
 #container {
   margin: 0 auto;
   width: 98%;

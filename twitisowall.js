@@ -35,6 +35,19 @@ $(function() {
   $("#searchInput").val(initSearch);
   search(initSearch)
 
+  // Hide image
+  $("#imageDeleteTools").hover(function() {
+    var that = $(this);
+    that.css("box-shadow", "#aaa 1px 1px 3px");
+    that.css("cursor", "pointer");
+  }, function() {
+    var that = $(this);
+    that.css("box-shadow", "none");
+    that.css("cursor", "auto");
+  }).click(function() {
+    $("#tools").empty();
+  })
+
   startTimer('updateTweets', 2000, updateTweets);
 });
 
