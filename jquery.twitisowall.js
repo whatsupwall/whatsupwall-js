@@ -8,11 +8,11 @@
   var params = {};
   var container;
 
-  function queryTwitter(params) {
-    if (!params.match(/^\?/)) {
-      params = "?" + params
+  function queryTwitter(request) {
+    if (!request.match(/^\?/)) {
+      request = "?" + request
     }
-    $.getJSON("http://search.twitter.com/search.json" + params + "&rpp=35&include_entities=1&result_type=recent&callback=?", handleResponse).error(handleError);
+    $.getJSON("http://search.twitter.com/search.json" + request + "&rpp=" + params.rpp + "&include_entities=1&result_type=recent&callback=?", handleResponse).error(handleError);
   }
 
   function handleError(data) {
@@ -147,10 +147,10 @@
 
     clearTimer('autoRefresh')
     container.isotope('remove', container.children());
-    queryTwitter("q=" + encodeURI(value));
+    queryTwitter("q=" + encodeURIComponent(value));
   }
 
-  function defaultToolbarInit(toolbar) {
+  function defaultToolbarInit(toolbar, inputValue) {
     //Input field
     var timeout;
     toolbar.find(".searchInput").keypress(function(e) {
@@ -162,7 +162,7 @@
         }
         search(that.val())
       }, 800);
-    }).val("initSearch");
+    }).val(inputValue);
 
     // Hide image
     toolbar.find(".imageDeleteTools").css("opacity", "0.5").hover(function() {
@@ -184,6 +184,7 @@
       refreshTime: 4000,
       inputValue: "",
       defaultValue: "arnaudke",
+      rpp: 35,
       toolbarOpts: {
         template: {},
         init: defaultToolbarInit
@@ -213,7 +214,7 @@
       }
       //tools div
       var toolbar = $(ich.toolbar(params.toolbarOpts.template));
-      params.toolbarOpts.init(toolbar)
+      params.toolbarOpts.init(toolbar, initSearch)
       toolbar.prependTo(that)
     })
   }
