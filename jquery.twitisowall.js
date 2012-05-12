@@ -1,17 +1,18 @@
 ;
-var twitisowall = (function() {
+(function($) {
 
   var INTAGRAM_REGEX = /instagr\.am\/p\/\w+\/?/
   var TWITPIC_REGEX = /twitpic.com\/(\w+)/
 
   var timers = {};
   var params = {};
+  var container;
 
-  function queryTwitter(params) {
-    if (!params.match(/^\?/)) {
-      params = "?" + params
+  function queryTwitter(request) {
+    if (!request.match(/^\?/)) {
+      request = "?" + request
     }
-    $.getJSON("http://search.twitter.com/search.json" + params + "&rpp=35&include_entities=1&result_type=recent&callback=?", handleResponse).error(handleError);
+    $.getJSON("http://search.twitter.com/search.json" + request + "&rpp=" + params.rpp + "&include_entities=1&result_type=recent&callback=?", handleResponse).error(handleError);
   }
 
   function handleError(data) {
@@ -146,21 +147,54 @@ var twitisowall = (function() {
 
     clearTimer('autoRefresh')
     container.isotope('remove', container.children());
-    queryTwitter("q=" + encodeURI(value));
+    queryTwitter("q=" + encodeURIComponent(value));
   }
 
-  return {
-    init: function(opts) {
-      opts = opts || {}
-      params = {}
-      params.updateTime    = opts.updateTime || 2000
-      params.refreshTime   = opts.refreshTime || 4000
-      params.inputValue    = opts.inputValue || ""
-      params.defaultValue  = opts.defaultValue || "arnaudke"
-      console.log(params)
+  function defaultToolbarInit(toolbar, inputValue) {
+    //Input field
+    var timeout;
+    toolbar.find(".searchInput").keypress(function(e) {
+      clearTimeout(timeout)
+      var that = $(this);
+      timeout = setTimeout(function() {
+        if (sessionStorage) {
+          sessionStorage.searchInput = that.val()
+        }
+        search(that.val())
+      }, 800);
+    }).val(inputValue);
 
-      container = $("#container");
+    // Hide image
+    toolbar.find(".imageDeleteTools").css("opacity", "0.5").hover(function() {
+      var that = $(this);
+      that.css("opacity", "1");
+      that.css("cursor", "pointer");
+    }, function() {
+      var that = $(this);
+      that.css("opacity", "0.5");
+      that.css("cursor", "auto");
+    }).click(function() {
+      toolbar.remove();
+    })
+  }
 
+  $.fn.twitisowall = function(opts) {
+    params = $.extend({
+      updateTime: 2000,
+      refreshTime: 4000,
+      inputValue: "",
+      defaultValue: "arnaudke",
+      rpp: 35,
+      toolbarOpts: {
+        template: {},
+        init: defaultToolbarInit
+      }
+    }, opts)
+
+    return this.each(function() {
+      var that = $(this)
+
+      container = $("<div class='twitisowall'></div>").appendTo(that)
       // Init container
       container.isotope({
         // options
@@ -168,49 +202,25 @@ var twitisowall = (function() {
         layoutMode: 'masonry',
       });
 
-      //Input field
-      var timeout;
-      $("#searchInput").keypress(function(e) {
-        clearTimeout(timeout)
-        var that = $(this);
-        timeout = setTimeout(function() {
-          if (sessionStorage) {
-            sessionStorage.searchInput = that.val()
-          }
-          search(that.val())
-        }, 800);
-      });
-
       var initSearch = params.inputValue || params.defaultValue;
       if (!params.inputValue && sessionStorage && sessionStorage.searchInput) {
         console.log("Search: " + sessionStorage.searchInput)
         initSearch = sessionStorage.searchInput
       }
-      $("#searchInput").val(initSearch);
       search(initSearch)
 
       if (params.inputValue) {
-        $("#tools").remove();
         return;
       }
-
-      // Hide image
-      $("#imageDeleteTools").css("opacity", "0.5").hover(function() {
-        var that = $(this);
-        that.css("opacity", "1");
-        that.css("cursor", "pointer");
-      }, function() {
-        var that = $(this);
-        that.css("opacity", "0.5");
-        that.css("cursor", "auto");
-      }).click(function() {
-        $("#tools").remove();
-      })
-    }
+      //tools div
+      var toolbar = $(ich.toolbar(params.toolbarOpts.template));
+      params.toolbarOpts.init(toolbar, initSearch)
+      toolbar.prependTo(that)
+    })
   }
+})(jQuery);
 
-})()
 
-;$(function() {
-  twitisowall.init()
+$(function() {
+  $("#container").twitisowall()
 });
