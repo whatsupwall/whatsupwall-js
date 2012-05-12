@@ -3,13 +3,13 @@ body {
   padding: 0;
 }
 
-#tools {
+.twitisotoolbar {
   padding: 15px 10px 25px 10px;
   background-color: #eee;
   border-bottom: 1px solid #555;
 }
 
-#imageDeleteTools {
+.twitisotoolbar .imageDeleteTools {
   padding: 3px;
   position: absolute;
   right: 5%;
@@ -17,12 +17,28 @@ body {
   height: 3.4em;
 }
 
-#container {
+.twitisotoolbar .searchInput {
+  display: block;
+  width: 90%;
+  border: 1px solid #444;
+  margin: 0 auto;
+  padding: 0.4em;
+  text-shadow: #888 1px 1px 1px;
+  font-size: 1.3em;
+  background-color: #fcfcfc;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+       -o-border-radius: 5px;
+          border-radius: 5px;
+}
+
+.twitisowall {
   margin: 0 auto;
   width: 98%;
 }
 
-.item {
+.twitisowall .item {
 	background-color: #ddd;
   border: 1px solid #999;
 	padding: 10px;
@@ -40,11 +56,11 @@ body {
           border-bottom-right-radius: 10px;
 }
 
-.item.newItem {
+.twitisowall .item.newItem {
   background-color: #F8D4DB;
 }
 
-.item p {
+.twitisowall .item p {
   clear: both;
   word-wrap: break-word;
   border: 1px solid #555;
@@ -60,23 +76,23 @@ body {
           border-radius: 3px;
 }
 
-.item img {
+.twitisowall .item img {
   border:1px solid #888;
   background-color: #fff;
   padding: 3px;
 }
 
-.item .attached_media {
+.twitisowall .item .attached_media {
   margin-top: 5px;
   text-align: center;
 }
 
-.item .media {
+.twitisowall .item .media {
   width: 150px;
   height: 150px;
 }
 
-.item p img {
+.twitisowall .item p img {
   width: 48px;
   height: 48px;
   float: left;
@@ -92,29 +108,13 @@ body {
   font-size: 0.8em;
 }
 
-#searchInput {
-  display: block;
-  width: 90%;
-  border: 1px solid #444;
-  margin: 0 auto;
-  padding: 0.4em;
-  text-shadow: #888 1px 1px 1px;
-  font-size: 1.3em;
-  background-color: #fcfcfc;
-  -webkit-border-radius: 5px;
-     -moz-border-radius: 5px;
-      -ms-border-radius: 5px;
-       -o-border-radius: 5px;
-          border-radius: 5px;
-}
-
-a {
+.twitisowall a {
   color: red;
   text-shadow: #aaa 1px 2px 2px;
 }
-a, a:visited {
+.twitisowall a, .twitisowall a:visited {
   text-decoration: none;
 }
-a:hover {
+.twitisowall a:hover {
   text-decoration: underline;
 };
