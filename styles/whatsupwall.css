@@ -3,13 +3,13 @@ body {
   padding: 0;
 }
 
-.twitisotoolbar {
+.whatsuptoolbar {
   padding: 15px 10px 25px 10px;
   background-color: #eee;
   border-bottom: 1px solid #555;
 }
 
-.twitisotoolbar .imageDeleteTools {
+.whatsuptoolbar .imageDeleteTools {
   padding: 3px;
   position: absolute;
   right: 5%;
@@ -17,7 +17,7 @@ body {
   height: 3.4em;
 }
 
-.twitisotoolbar .searchInput {
+.whatsuptoolbar .searchInput {
   display: block;
   width: 90%;
   border: 1px solid #444;
@@ -33,12 +33,12 @@ body {
           border-radius: 5px;
 }
 
-.twitisowall {
+.whatsupwall {
   margin: 0 auto;
   width: 98%;
 }
 
-.twitisowall .item {
+.whatsupwall .item {
 	background-color: #ddd;
   border: 1px solid #999;
 	padding: 10px;
@@ -56,11 +56,11 @@ body {
           border-bottom-right-radius: 10px;
 }
 
-.twitisowall .item.newItem {
+.whatsupwall .item.newItem {
   background-color: #F8D4DB;
 }
 
-.twitisowall .item p {
+.whatsupwall .item p {
   clear: both;
   word-wrap: break-word;
   border: 1px solid #555;
@@ -76,23 +76,23 @@ body {
           border-radius: 3px;
 }
 
-.twitisowall .item img {
+.whatsupwall .item img {
   border:1px solid #888;
   background-color: #fff;
   padding: 3px;
 }
 
-.twitisowall .item .attached_media {
+.whatsupwall .item .attached_media {
   margin-top: 5px;
   text-align: center;
 }
 
-.twitisowall .item .media {
+.whatsupwall .item .media {
   width: 150px;
   height: 150px;
 }
 
-.twitisowall .item p img {
+.whatsupwall .item p img {
   width: 48px;
   height: 48px;
   float: left;
@@ -108,13 +108,13 @@ body {
   font-size: 0.8em;
 }
 
-.twitisowall a {
+.whatsupwall a {
   color: red;
   text-shadow: #aaa 1px 2px 2px;
 }
-.twitisowall a, .twitisowall a:visited {
+.whatsupwall a, .whatsupwall a:visited {
   text-decoration: none;
 }
-.twitisowall a:hover {
+.whatsupwall a:hover {
   text-decoration: underline;
 };

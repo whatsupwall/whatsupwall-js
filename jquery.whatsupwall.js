@@ -178,7 +178,7 @@
     })
   }
 
-  $.fn.twitisowall = function(opts) {
+  $.fn.whatsupwall = function(opts) {
     params = $.extend({
       updateTime: 2000,
       refreshTime: 4000,
@@ -194,7 +194,7 @@
     return this.each(function() {
       var that = $(this)
 
-      container = $("<div class='twitisowall'></div>").appendTo(that)
+      container = $("<div class='whatsupwall'></div>").appendTo(that)
       // Init container
       container.isotope({
         // options
@@ -222,5 +222,5 @@
 
 
 $(function() {
-  $("#container").twitisowall()
+  $("#container").whatsupwall()
 });
