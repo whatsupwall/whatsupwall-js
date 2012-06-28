@@ -219,8 +219,3 @@
     })
   }
 })(jQuery);
-
-
-$(function() {
-  $("#container").whatsupwall()
-});
