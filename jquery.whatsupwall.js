@@ -2,7 +2,7 @@
 (function($) {
 
   var INTAGRAM_REGEX = /instagr\.am\/p\/\w+\/?/
-  var TWITPIC_REGEX = /twitpic.com\/(\w+)/
+  var TWITPIC_REGEX = /twitpic\.com\/(\w+)/
 
   var timers = {};
   var params = {};
