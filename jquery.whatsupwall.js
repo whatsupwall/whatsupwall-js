@@ -7,6 +7,7 @@
   var timers = {};
   var params = {};
   var container;
+  var haveNewTweets = false;
 
   function queryTwitter(request) {
     if (!request.match(/^\?/)) {
@@ -31,9 +32,8 @@
     }
 
     var nbChild = container.children().size();
-    var maxItem = 100;
-    if (nbChild > maxItem) {
-      container.isotope('remove', container.children().slice(maxItem));
+    if (nbChild > params.maxItems) {
+      container.isotope('remove', container.children().slice(params.maxItems));
     }
   }
 
@@ -53,6 +53,10 @@
   }
 
   function appendTweets(data) {
+    if (data['results']) {
+      haveNewTweets = true;
+    }
+
     $.map(data['results'], function(obj, index) {
       // add created_from value
       obj['created_from'] = moment(obj['created_at']).fromNow()
@@ -129,15 +133,25 @@
   }
 
   function updateTweets() {
+    var hasNew = haveNewTweets;
+    haveNewTweets = false;
+
     container.children().each(function() {
       var that = $(this)
       that.find(".create_from").html(moment(that.data('createdAt')).fromNow())
+      if (hasNew) {
+        var baseSeniority = that.data('seniority');
+        var seniority = baseSeniority;
+        if (seniority < params.seniorityMax) {
+          seniority += 1;
+        }
+        that.data('seniority', seniority);
 
-      var diff = moment().diff(moment(that.data('addedAt')), 'seconds')
-      var hex = diff.toString(16);
-      that.animate({
-        color: "red"
-      }, 200);
+        if (baseSeniority != seniority) {
+          that.removeClass('seniority-' + baseSeniority * params.seniorityClassInc);
+          that.addClass('seniority-' + seniority * params.seniorityClassInc);
+        }
+      }
     })
     container.isotope('reloadItems')
   }
@@ -180,16 +194,19 @@
 
   $.fn.whatsupwall = function(opts) {
     params = $.extend({
-      updateTime: 2000,
+      updateTime: 800,
       refreshTime: 4000,
+      maxItems: 75,
       inputValue: "",
       defaultValue: "arnaudke",
+      seniorityMax: 5,
       rpp: 35,
       toolbarOpts: {
         template: {},
         init: defaultToolbarInit
       }
     }, opts)
+    params.seniorityClassInc = 100 / params.seniorityMax;
 
     return this.each(function() {
       var that = $(this)

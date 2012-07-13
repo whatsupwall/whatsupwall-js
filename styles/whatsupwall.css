@@ -39,8 +39,8 @@ body {
 }
 
 .whatsupwall .item {
-	background-color: #ddd;
   border: 1px solid #999;
+  background-color: #ccc;
 	padding: 10px;
 	margin: 5px;
   width: 22%;
@@ -118,3 +118,23 @@ body {
 .whatsupwall a:hover {
   text-decoration: underline;
 };
+
+.whatsupwall .item.seniority-20 {
+  background-color: #c5c5c5;
+}
+
+.whatsupwall .item.seniority-40 {
+ background-color: #ddd; 
+}
+
+.whatsupwall .item.seniority-60 {
+  background-color: #d5d5d5;
+}
+
+.whatsupwall .item.seniority-80 {
+  background-color: #eee;
+}
+
+.whatsupwall .item.seniority-100 {
+  background-color: #e5e5e5;
+}
