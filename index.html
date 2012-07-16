@@ -7,16 +7,22 @@
     <script src="scripts/moment.min.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/jquery.isotope.min.js"></script>
-    <script src="jquery.twitisowall.js"></script>
+    <script src="jquery.whatsupwall.js"></script>
 
     <!-- CSS -->
     <link href="styles/isotop.css" type="text/css" rel="stylesheet">
-    <link href="styles/twitisowall.css" type="text/css" rel="stylesheet">
+    <link href="styles/whatsupwall.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#container").whatsupwall()
+      });
+    </script>
 
     <!-- templates -->
     <script id="tweet" type="text/html">
       {{#results}}
-      <div class="item" data-created-at="{{created_at}}" data-added-at="{{added_at}}">
+      <div class="item" data-seniority="0" data-created-at="{{created_at}}" data-added-at="{{added_at}}">
         <span class="author_name"><a href="https://twitter.com/#!/{{from_user}}">{{from_user_name}}</a></span> <span class="author_login">@{{from_user}}</span> <span class="create_from">{{created_from}}</span>
         <p><img src="{{profile_image_url_https}}" alt="{{from_user}}" />
         {{{text}}}</p>
@@ -30,7 +36,7 @@
     </script>
 
     <script id="toolbar" type="text/html">
-        <div class="twitisotoolbar">
+        <div class="whatsuptoolbar">
             <img class="imageDeleteTools" src="images/trash.png" alt="remove the complete tools bar" />
             <input class="searchInput" type="text" name="search" />
         </div>

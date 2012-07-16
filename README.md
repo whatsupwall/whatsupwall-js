@@ -1,9 +1,9 @@
-# twitisowall
+# whatsupwall
 
 ## Intro
 
 Another automatic Twitter wall with lots of great javascript libraries to enhance your presentation.
-You may look what it looks like following my gh-pages: http://akervern.github.com/twitisowall/
+You may look what it looks like following my gh-pages: http://akervern.github.com/whatsupwall/
 
 ## Libraries
  * [ICanHaz.js](http://icanhazjs.com/): a really nice client-side templating using [{{ mustache }}](http://mustache.github.com/). (MIT)
